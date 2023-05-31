@@ -1,18 +1,25 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main class="home">
+    <AppTopBannerBlock/>
+    <AppProductSliderBlock/>
+    <AppInfoBlock/>
+    <AppHowToPlayBlock/>
+    <AppWinnersBlock/>
+    <AppPartnersBlock/>
+  </main>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+<script setup>
+import AppTopBannerBlock from "@/components/homeViewBlocks/AppTopBannerBlock";
+import AppInfoBlock from "@/components/homeViewBlocks/AppInfoBlock";
+import AppHowToPlayBlock from "@/components/commonBlocks/AppHowToPlayBlock";
+import AppWinnersBlock from "@/components/homeViewBlocks/AppWinnersBlock";
+import AppPartnersBlock from "@/components/homeViewBlocks/AppPartnersBlock";
+import AppProductSliderBlock from "@/components/homeViewBlocks/AppProductSliderBlock";
 
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
 </script>
+<style lang="scss" scoped>
+.home {
+  margin: -130px 0 0 0;
+}
+</style>

@@ -1,30 +1,52 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <AppHeader :menuList="menuList"/>
+    <router-view/>
+    <AppFooter :menuList="menuList" :position="'footer_position'"/>
+  </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-nav {
-  padding: 30px;
+<script setup>
+import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/AppFooter";
+import {onMounted, ref} from "vue";
+import {useStore} from 'vuex'
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+const store = useStore()
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+const menuList = ref([
+  {
+    name: "competition",
+    component: "competitionView"
+  }, {
+    name: "rules",
+    component: "rulesViewBlocks"
+  },
+  {
+    name: "about",
+    component: "aboutViewBlocks"
+  },
+  {
+    name: "charities",
+    component: "charitiesView"
+  },
+  {
+    name: "past_winner",
+    component: "pastWinnerViewBlocks"
+  },
+  {
+    name: "faq",
+    component: "faqViewBlocks"
+  },
+])
+onMounted(() => {
+  store.commit("screenSizeMutation", window.outerWidth)
+  window.addEventListener("resize", () => {
+    store.commit("screenSizeMutation", window.outerWidth)
+  })
+})
+
+</script>
+
+<style lang="scss"></style>
