@@ -46,9 +46,9 @@
           <h3 class="amount-scroll-title">Tickets remaining</h3>
           <div class="range-like-el">
             <div class="progress-bar"
-                 :style="{ width: `${rangeValue/rangeMaxValue*100}%`}"
+                 :style="{ width: `${availableAmount/totalAmount*100}%`}"
                  ref="progresBar">
-              <span class="value" ref="progresBarValue"> {{rangeValue}}</span>
+              <span class="value" ref="progresBarValue"> {{availableAmount}}</span>
             </div>
           </div>
         </div>
@@ -60,8 +60,14 @@
         <a href="#" class="btn btn-primary-iconed mobile">
           <img src="@/assets/images/svg/common/cart.svg" alt="cart icon">
         </a>
-        <div class="btn">
-          <AppAnimateButton buttonType="secondary" buttonName="Details"/>
+        <div class="counter">
+          <button>
+            <img src="@/assets/images/svg/common/minusIcon.svg" alt="minus icon" @click="cartAmount--">
+          </button>
+          <input type="text" v-model="cartAmount">
+          <button>
+            <img src="@/assets/images/svg/common/plusIcon.svg" alt="plus icon" @click="cartAmount++">
+          </button>
         </div>
       </div>
     </div>
@@ -69,10 +75,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import AppAnimateButton from "@/components/commonEls/AppAnimateButton";
-const rangeMaxValue = 42;
-const rangeValue = 18;
+
+const totalAmount = ref(42);
+const startAmount = ref(18);
+const cartAmount = ref(0);
 const finalDate = new Date().getTime() + 250000000;
 const timer = ref({
   days: 0,
@@ -80,6 +88,14 @@ const timer = ref({
   minutes: 0,
   seconds: 0
 });
+
+watch(cartAmount, newCartAmount => {
+  if (newCartAmount < 0) {
+    cartAmount.value = 0
+  } else if(newCartAmount > startAmount.value){
+    cartAmount.value = startAmount.value
+  }
+})
 
 onMounted(()=>{
   const timerService = setInterval(() => {
@@ -97,6 +113,9 @@ onMounted(()=>{
       timer.value.seconds = 0;
       clearInterval(timerService)
   },1000);
+})
+const availableAmount = computed(() => {
+  return startAmount.value - cartAmount.value
 })
 </script>
 
@@ -245,6 +264,15 @@ onMounted(()=>{
       column-gap: 20px;
       margin: 40px 0 0;
       .btn{}
+    }
+    .counter{
+      display: flex;
+      align-items: center;
+      width: 160px;
+      height: 50px;
+      background: rgba(236, 126, 37, 0.1);
+      border: 1px solid var(--color-orange);
+      border-radius: 25px;
     }
   }
 }
